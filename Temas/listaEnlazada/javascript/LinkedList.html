@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>LinkedList</title>
+</head>
+<body>
+
+</body>
+<script>
+	function Node(name, value){
+		this.name = name;
+		this.value = value;
+		this.next = next;
+
+		this.addNext = NodeAddNext;
+	}
+
+		function NodeAddNext(node){
+			this.next = node;
+		}
+
+
+	node1 = new Node("Primero", 1);
+	node2 = new Node("Segundo", 2);
+	node3 = new Node("Tercero", 3);
+	node4 = new Node("Cuarto", 4);
+	nodo3.addNext(node4);
+	nodo2.addNext(node3);
+	nodo1.addNext(node2);
+
+	function LinkedList(){
+		this.first = null;
+		this.add = LinkedListAdd;
+		this.print = LinkedListPrint;
+	}
+
+		function LinkedListAdd(node){
+			if(!this.first){
+				this.first = node;
+			}else{
+				temporalNode = this.first;
+				while(temporalNode.next){
+					temporalNode = temporalNode.next;
+				}
+				temporalNode.next = node;
+			}
+		}
+
+</script>
+</html>
