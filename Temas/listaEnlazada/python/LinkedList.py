@@ -1,5 +1,5 @@
 class LinkedList:
-	
+		
 	class __Node:
 		def __init__(self, item, next = None):
 			self.item = item
@@ -25,7 +25,7 @@ class LinkedList:
 		for e in contents:
 			self.append(e)
 
-
+				
 	def __getitem__(self, index):
 		if index >= 0 and index < self.numItems:
 			cursor = self.first.getNext()
