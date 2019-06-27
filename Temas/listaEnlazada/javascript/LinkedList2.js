@@ -1,12 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>LinkedList2</title>
-</head>
-<body>
-
-</body>
-<script>
 	
 	function Node(item, next){
 		this.item = item;
@@ -99,6 +90,3 @@
 			}
 		}
 
-
-</script>
-</html>

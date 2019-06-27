@@ -75,7 +75,7 @@ class LinkedList:
 
 		if index < self.numItems:
 			for i in range(index):
-				cursor = cursor.getNext()
+					cursor = cursor.getNext()
 
 			node = LinkedList.__Node(item, cursor.getNext())
 			cursor.setNext(node)
