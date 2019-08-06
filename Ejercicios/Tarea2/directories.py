@@ -24,19 +24,6 @@ class Directories:
 				cursor = cursor.getNext()
 			cursor.setItem(item)
 
-	def add(self, other):
-		ll = LinkedList()
-		cursor = other.first
-		while(cursor != None):
-			ll.append(cursor.getItem())
-			cursor =  cursor.getNext()
-		cursor = self.first
-		while(cursor != None):
-			if cursor.getItem() != None:
-				ll.append(cursor.getItem())
-			cursor = cursor.getNext()
-		return ll
-
 
 	def append(self, item):
 		cursor = self.first
@@ -51,21 +38,6 @@ class Directories:
 			cursor.setNext(Node(item))
 			self.numItems += 1
 
-	def insert(self, item, index):
-		if(index < self.numItems):
-			cursor = self.first
-			for i in range(index):
-				cursor = cursor.getNext()
-
-
-			#print("el cursor es "+str(cursor.item.name))
-			#print("el numero de objetos es "+str(self.numItems))
-			#print("el index es "+str(index))
-			node = Node(item, cursor.getNext())
-			cursor.setNext(node)
-			self.numItems += 1
-		else:
-			self.append(item)
 
 	def printer(self):
 		cursor = self.first
@@ -93,17 +65,17 @@ class Directories:
 	def mapMenuDirectories(self, choise):
 		
 		switcher = {
-			1:self.newDirectory,
-			2:self.deleteDirectory,
-			3:self.editDirectory,
-			4:quit
+			"1":self.newDirectory,
+			"2":self.deleteDirectory,
+			"3":self.editDirectory,
+			"4":quit
 		}
-		funct = switcher.get(choise)
-		print funct()
+		funct = switcher.get(choise,lambda: self.menuDirectories() )
+		print(funct())
 			
 
 	def newDirectory(self):
-		name = raw_input("Ingrese el nombre del directorio: ")
+		name = input("Ingrese el nombre del directorio: ")
 		directory = Directory(name)
 		self.append(directory)
 		print("Directorio Creado Exitosamente")
@@ -111,13 +83,15 @@ class Directories:
 		self.menuDirectories()
 
 	def deleteDirectory(self):
-		pass
+		print("proximamente")
+		print("")
+		self.menuDirectories()
 
 	def editDirectory(self):
 		self.printer()
 		print(" ")
 		choise = input("directorio a editar: ")
-		directory = self.getItem(choise)
+		directory = self.getItem(int(choise))
 		if directory == False and directory == None:
 			print("directorio no encontrado")
 			print(" ")

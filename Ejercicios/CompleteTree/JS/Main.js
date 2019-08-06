@@ -1,0 +1,1 @@
+tree = new Tree();
