@@ -1,0 +1,35 @@
+------------------------------------
+Simulacion de Sistemas de archivos:
+------------------------------------
+1-5 semanas para hacerlo.
+2-Programado en Python 3, v+5
+
+
+-------
+Partes
+-------
+1-Ventana grafica que se debe cargar en el centro de la pantalla.
+2-Simulacion de gestores de archivos que por dentro son arboles.
+
+
+
+----------------
+1-Ventana Grafica
+-----------------
+-La interfaz constara de los siguientes botones:
+1-Agregar carpeta.
+2-Eliminar carpeta.
+3-Agregar archivo.
+4-Eliminar archivo
+
+
+--------------------------------
+1-Programacion gestor de archivos
+---------------------------------
+-La interfaz tendra una ventana con las siguientes funcionalidades:
+1-Select multiple: Permite Seleccionar mas de 1 elemento mediante ctrl + click.
+2-Permita entrar en directorios (no en archivos).
+3-Se debe poder copiar, archivos y carpetas.
+4-No deben existir nodos duplicados y se deben reemplazar.
+5-Internamente los select multiples deben de ser arboles.
+6-Memoria permanente contenido de los arboles, usando archivo plano.

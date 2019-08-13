@@ -1,0 +1,12 @@
+1-Crear todas las clases DTA (nodo,listas,arbol) que se necesitaran
+2-definir el metodo agregar para archivos y directorios
+3-definir el metodo reemplazar para archivos y directorios
+4-definir el metodo copiar para archivos y directorios
+5-definir el metodo eliminar para archivos y directorios
+
+-------------
+Secundarios
+--------------
+6-definir el metodo de eliminacion multiple
+7-definir el metodo copia multiple, tener en cuenta que si uno de los elementos esta repetido debera ser reemplazado.
+

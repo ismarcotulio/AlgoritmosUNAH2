@@ -1,0 +1,54 @@
+--------------------------
+Elementos del Gestor
+--------------------------
+1-Estructura.
+2-Carpetas.
+3-Archivos.
+4-Memoria Permanente.
+
+-----------
+Estructura
+-----------
+1-La estructura representa la diferencia entre cada elemento del gestor.
+2-En ella se incluyen los TDAs: Arboles, Listas enlazadas, Nodos.
+
+
+---------
+Carpetas
+---------
+1-Se encuentran dentro de los nodos en la estructura.
+2-Tienen los siguientes atributos: type=directory,name=nameDirectory,childrens = linkedList().
+3-No pueden haber duplicadas, en caso de crear una duplicada, se deberan de reemplazar.
+4-Permiten escalar de nivle en el arbol.
+
+----------
+Archivos
+----------
+1-Se encuentran dentro de los nodos en la estructura.
+2-Tienen los siguientes atributos: type=file,name=nameFile
+3-No pueden haber duplicadas, en caso de crear una duplicada, se deberan de reemplazar.
+
+-------
+clases
+-------
+-Tree
+-LinkedList
+-Node
+-Directory
+-File
+
+
+-----
+Tree
+-----
+funciones:
+1-addFile
+2-addDirectory
+3-deleteNode
+4-changeFile
+5-changeDirectory
+6-search
+7-deleteNodes
+8-copyNodesTo
+9-selectMultiple
+10-saveTree
