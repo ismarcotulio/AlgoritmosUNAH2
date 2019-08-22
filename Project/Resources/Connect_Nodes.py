@@ -5,4 +5,3 @@ class Connect_Nodes:
         self.parent = parent
         self.value = value
         self.next = next
-
