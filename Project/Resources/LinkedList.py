@@ -7,17 +7,17 @@ class LinkedList:
         self.first = None
         self.count = 0 #Se encarga de contar cuantos elementos hay en la lista enlazada
 
-    def add(self,value,parent): #Función para agregar cualquier Nodo
-        self.AddInner(self.first,value,parent)
+    def add(self,item, parent): #Función para agregar cualquier Nodo
+        self.AddInner(self.first,item,parent)
         self.count+=1
 
-    def AddInner(self, current,value,parent):
+    def AddInner(self, current,item,parent):
         if (current is None):
-            self.first = Connect_Nodes(value,parent)
+            self.first = Connect_Nodes(item,parent)
         elif (current.next is None):
-            current.next = (Connect_Nodes(value,parent))
+            current.next = (Connect_Nodes(item,parent))
         else:
-            self.AddInner(current.next,value,parent)
+            self.AddInner(current.next,item,parent)
 
     def search(self,name): #Función de búsqueda, devuelve la primera Instancia encontrada
         return self.SearchInner(self.first,name)
@@ -25,8 +25,8 @@ class LinkedList:
     def SearchInner(self,current,name):
         if (current is None):
             return False
-        elif (current.value.name == name):
-            return current.value
+        elif (current.item.name == name):
+            return current.item
         else:
             return self.SearchInner(current.next, name) 
 
@@ -36,10 +36,22 @@ class LinkedList:
     def getInnerParent(self,current,name):
         if (current is None):
             return False
-        elif (current.value.name == name):
+        elif (current.item.name == name):
             return current.parent.name
         else:
             return self.getInnerParent(current.next, name) 
+
+    def getChild(self,value): # Devuelve quien es el padre de cualquier nodo
+        return self.getInnerChild(self.first,value)
+
+    def getInnerChild(self,current,name):
+        if (current is None):
+            return False
+        elif (current.item.name == name):
+            return current.item
+        else:
+            return self.getInnerParent(current.next, name) 
+
 
     def NoDuplicate(self,name): #Ésta Funcion sirve para proteger la lista de archivos o Carpetas repetidas
         current = self.first
@@ -48,7 +60,7 @@ class LinkedList:
             return verify
         else:
             while(current.next):
-                if (current.value.name == name):
+                if (current.item.name == name):
                     verify += 1
                 current = current.next
         return verify

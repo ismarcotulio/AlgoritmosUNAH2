@@ -156,6 +156,20 @@ class Ui_Explorer(QtWidgets.QMainWindow):
 
         self.bonsai_A = Tree()
         self.bonsai_B = Tree()
+        node1 = Directory_Node("archivo1")
+        node2 = Directory_Node("archivo2")
+        node3 = Directory_Node("archivo3")
+        self.bonsai_A.addChild(node1)
+        self.bonsai_A.addChild(node2)
+        self.bonsai_A.addChild(node3)
+        self.bonsai_A.moveTo("archivo1")
+        node4 = Directory_Node("archivo1.1")
+        node5 = Directory_Node("archivo1.2")
+        self.bonsai_A.addChild(node4)
+        self.bonsai_A.addChild(node5)
+
+
+
 
         #Señales
         self.A_NewFile.clicked.connect(self.AddFile_A)

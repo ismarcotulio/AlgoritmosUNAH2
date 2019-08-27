@@ -1,4 +1,4 @@
-fileName = "csv.csv"
+	fileName = "csv.csv"
 
 f = open(fileName, "r")
 
