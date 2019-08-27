@@ -120,14 +120,14 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.B_NewFile.setStyleSheet("background-color: rgb(186, 189, 182);")
         self.B_NewFile.setObjectName("B_NewFile")
         
-        self.About = QtWidgets.QPushButton(self.centralwidget)
-        self.About.setGeometry(QtCore.QRect(320, 350, 81, 25))
+        self.Back = QtWidgets.QPushButton(self.centralwidget)
+        self.Back.setGeometry(QtCore.QRect(320, 350, 81, 25))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
-        self.About.setFont(font)
-        self.About.setStyleSheet("background-color: rgb(186, 189, 182);")
-        self.About.setObjectName("About")
+        self.Back.setFont(font)
+        self.Back.setStyleSheet("background-color: rgb(186, 189, 182);")
+        self.Back.setObjectName("Back")
         
         self.B_to_A = QtWidgets.QPushButton(self.centralwidget)
         self.B_to_A.setGeometry(QtCore.QRect(330, 180, 61, 31))
@@ -170,8 +170,12 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.B_to_A.clicked.connect(self._copyFromB)
         self.TreeA.itemDoubleClicked.connect(self.A_Navigator)
         self.TreeB.itemDoubleClicked.connect(self.B_Navigator)
+        self.Back.clicked.connect(self.GoBack)
 
         QtCore.QMetaObject.connectSlotsByName(Explorer)
+
+    def GoBack(self):
+        pass
 
     def AddFile_A(self):
         self.cuadro = QInputDialog()
@@ -373,6 +377,6 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.label_2.setText(_translate("Explorer", "TREE B"))
         self.B_NewFolder.setText(_translate("Explorer", "New Folder"))
         self.B_NewFile.setText(_translate("Explorer", "New File"))
-        self.About.setText(_translate("Explorer", "About"))
+        self.Back.setText(_translate("Explorer", "Back"))
         self.B_to_A.setText(_translate("Explorer", "←"))
         self.A_NewFolder.setText(_translate("Explorer", "New Folder"))
