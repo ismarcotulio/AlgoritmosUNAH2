@@ -51,7 +51,7 @@ class Tree:
             parent = self.root
 
         self.root = parent.children.getChild(value)
-        print("La ruta actual es %s"%parent.name)
+        print("La ruta actual es %s"%self.root.name)
         return True
 
 

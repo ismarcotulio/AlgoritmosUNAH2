@@ -156,17 +156,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
 
         self.bonsai_A = Tree()
         self.bonsai_B = Tree()
-        node1 = Directory_Node("archivo1")
-        node2 = Directory_Node("archivo2")
-        node3 = Directory_Node("archivo3")
-        self.bonsai_A.addChild(node1)
-        self.bonsai_A.addChild(node2)
-        self.bonsai_A.addChild(node3)
-        self.bonsai_A.moveTo("archivo1")
-        node4 = Directory_Node("archivo1.1")
-        node5 = Directory_Node("archivo1.2")
-        self.bonsai_A.addChild(node4)
-        self.bonsai_A.addChild(node5)
+
 
 
 
@@ -319,8 +309,30 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         if (item[0].type() == 0):
             print("Es una carpeta, No haré Nada")
         elif (item[0].type() == 1):
+            self.bonsai_A.moveTo(item[0].text())
+            self.TreeA.clear()
+            root = self.bonsai_A.root
+            current = root.children.first
+
+            self.A_currentChilds(current)
             print("Es un Folder, Limpiare la pantalla y Obtendré la lista con sus hijos")
-    
+            
+
+    def A_currentChilds(self,current):
+        if current is None:
+            return True
+        else:
+            text = current.item.name
+            item = QtWidgets.QListWidgetItem(None,1)
+            icon = QtGui.QIcon() #Instancia de un Icono
+            icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
+            item.setIcon(icon) 
+            item.setText(text)
+            self.TreeA.addItem(item)
+            self.A_currentChilds(current.next)
+
+
+
     def B_Navigator(self):
         item = self.TreeB.selectedItems()
         if (item[0].type() == 0):
