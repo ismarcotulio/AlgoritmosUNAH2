@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QInputDialog, QLineEdit
 
 from Resources.File_Node import *
 from Resources.Directory_Node import *
-from Resources.Connect_Nodes import *
 from Resources.LinkedList import *
 from Resources.Tree import *
 
@@ -157,9 +156,8 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.bonsai_A = Tree()
         self.bonsai_B = Tree()
 
-
-
-
+        self.queueA = []
+        self.queueB = []
 
         #Señales
         self.A_NewFile.clicked.connect(self.AddFile_A)
@@ -170,6 +168,8 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.B_to_A.clicked.connect(self._copyFromB)
         self.TreeA.itemDoubleClicked.connect(self.A_Navigator)
         self.TreeB.itemDoubleClicked.connect(self.B_Navigator)
+        self.About.clicked.connect(self.GoBack)
+
 
         QtCore.QMetaObject.connectSlotsByName(Explorer)
 
@@ -322,7 +322,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         if current is None:
             return True
         else:
-            text = current.item.name
+            text = current.name
             item = QtWidgets.QListWidgetItem(None,1)
             icon = QtGui.QIcon() #Instancia de un Icono
             icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
@@ -332,6 +332,14 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             self.A_currentChilds(current.next)
 
 
+    def GoBack(self):
+        if self.bonsai_A.root.name == "/":
+            print("se encuentra en la raiz")
+        else:
+            self.TreeA.clear()
+            self.bonsai_A.root = self.bonsai_A.root.parent
+            childs = self.bonsai_A.root.children
+            self.A_currentChilds(childs.first) 
 
     def B_Navigator(self):
         item = self.TreeB.selectedItems()

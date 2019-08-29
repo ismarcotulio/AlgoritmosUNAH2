@@ -1,6 +1,5 @@
 #Linked List almacena onjetos tipo Connect_Nodes los cuales se encargan de toda la estructura del Árbol
 
-from Resources.Connect_Nodes import *
 
 class LinkedList:
     def __init__(self):
@@ -13,9 +12,11 @@ class LinkedList:
 
     def AddInner(self, current,item,parent):
         if (current is None):
-            self.first = Connect_Nodes(item,parent)
+            self.first = item
+            self.first.parent = parent
         elif (current.next is None):
-            current.next = (Connect_Nodes(item,parent))
+            current.next = item
+            current.next.parent = parent
         else:
             self.AddInner(current.next,item,parent)
 
@@ -25,8 +26,8 @@ class LinkedList:
     def SearchInner(self,current,name):
         if (current is None):
             return False
-        elif (current.item.name == name):
-            return current.item
+        elif (current.name == name):
+            return current
         else:
             return self.SearchInner(current.next, name) 
 
@@ -36,7 +37,7 @@ class LinkedList:
     def getInnerParent(self,current,name):
         if (current is None):
             return False
-        elif (current.item.name == name):
+        elif (current.name == name):
             return current.parent.name
         else:
             return self.getInnerParent(current.next, name) 
@@ -47,10 +48,10 @@ class LinkedList:
     def getInnerChild(self,current,name):
         if (current is None):
             return False
-        elif (current.item.name == name):
-            return current.item
+        elif (current.name == name):
+            return current
         else:
-            return self.getInnerParent(current.next, name) 
+            return self.getInnerChild(current.next, name) 
 
 
     def NoDuplicate(self,name): #Ésta Funcion sirve para proteger la lista de archivos o Carpetas repetidas
@@ -60,7 +61,7 @@ class LinkedList:
             return verify
         else:
             while(current.next):
-                if (current.item.name == name):
+                if (current.name == name):
                     verify += 1
                 current = current.next
         return verify
