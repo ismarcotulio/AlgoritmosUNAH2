@@ -5,7 +5,6 @@ from PyQt5.QtWidgets import QInputDialog, QLineEdit
 
 from Resources.File_Node import *
 from Resources.Directory_Node import *
-from Resources.Connect_Nodes import *
 from Resources.LinkedList import *
 from Resources.Tree import *
 
@@ -120,14 +119,14 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.B_NewFile.setStyleSheet("background-color: rgb(186, 189, 182);")
         self.B_NewFile.setObjectName("B_NewFile")
         
-        self.Back = QtWidgets.QPushButton(self.centralwidget)
-        self.Back.setGeometry(QtCore.QRect(320, 350, 81, 25))
+        self.About = QtWidgets.QPushButton(self.centralwidget)
+        self.About.setGeometry(QtCore.QRect(320, 350, 81, 25))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
-        self.Back.setFont(font)
-        self.Back.setStyleSheet("background-color: rgb(186, 189, 182);")
-        self.Back.setObjectName("Back")
+        self.About.setFont(font)
+        self.About.setStyleSheet("background-color: rgb(186, 189, 182);")
+        self.About.setObjectName("About")
         
         self.B_to_A = QtWidgets.QPushButton(self.centralwidget)
         self.B_to_A.setGeometry(QtCore.QRect(330, 180, 61, 31))
@@ -157,9 +156,8 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.bonsai_A = Tree()
         self.bonsai_B = Tree()
 
-
-
-
+        self.queueA = []
+        self.queueB = []
 
         #Señales
         self.A_NewFile.clicked.connect(self.AddFile_A)
@@ -170,15 +168,12 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.B_to_A.clicked.connect(self._copyFromB)
         self.TreeA.itemDoubleClicked.connect(self.A_Navigator)
         self.TreeB.itemDoubleClicked.connect(self.B_Navigator)
-        self.Back.clicked.connect(self.GoBack)
 
         QtCore.QMetaObject.connectSlotsByName(Explorer)
 
-    def GoBack(self):
-        pass
-
     def AddFile_A(self):
         self.cuadro = QInputDialog()
+        self.center(self.cuadro)
         text, okPressed = self.cuadro.getText(self, "New File","File Name:", QLineEdit.Normal, "")
         if okPressed and text != '':
             file = File_Node(text) #Creamos un Nuevo Nodo File
@@ -313,41 +308,83 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         if (item[0].type() == 0):
             print("Es una carpeta, No haré Nada")
         elif (item[0].type() == 1):
-            self.bonsai_A.moveTo(item[0].text())
+            self.queueA.append(item[0].text())
+            text = item[0].text()
+            childs = self.bonsai_A._search(text)
             self.TreeA.clear()
-            root = self.bonsai_A.root
-            current = root.children.first
-
-            self.A_currentChilds(current)
-            print("Es un Folder, Limpiare la pantalla y Obtendré la lista con sus hijos")
-            
-
-    def A_currentChilds(self,current):
-        if current is None:
-            return True
-        else:
-            text = current.item.name
-            item = QtWidgets.QListWidgetItem(None,1)
-            icon = QtGui.QIcon() #Instancia de un Icono
-            icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
-            item.setIcon(icon) 
-            item.setText(text)
-            self.TreeA.addItem(item)
-            self.A_currentChilds(current.next)
-
-
-
+            for i in range(len(childs)):
+                if (childs[i] == "." or childs[i]==".."):
+                    value = QtWidgets.QListWidgetItem(None,2)
+                    value.setText(childs[i])
+                    self.TreeA.addItem(value)
+        elif (item[0].type() == 2 and item[0].text()==".."):
+            print (self.queueA)
+            childs = self.bonsai_A._search(self.queueA[len(self.queueA)-1])
+            self.queueA.pop()
+            self.TreeA.clear()
+            for i in range(len(childs)):
+                if (childs[i] == "." or childs[i]==".."):
+                    value = QtWidgets.QListWidgetItem(None,2)
+                    value.setText(childs[i])
+                    self.TreeA.addItem(value)
+                elif (isinstance(childs[i],File_Node)):
+                    value = QtWidgets.QListWidgetItem(None,0)
+                    icon = QtGui.QIcon() #Instancia de un Icono
+                    icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                    value.setIcon(icon)
+                    value.setText(childs[i].name)
+                    self.TreeA.addItem(value)
+                elif (isinstance(childs[i],Directory_Node)):
+                    value = QtWidgets.QListWidgetItem(None,1)
+                    icon = QtGui.QIcon() #Instancia de un Icono
+                    icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                    value.setIcon(icon)
+                    value.setText(childs[i].name)
+                    self.TreeA.addItem(value)
+ 
     def B_Navigator(self):
         item = self.TreeB.selectedItems()
         if (item[0].type() == 0):
             print("Es una carpeta, No haré Nada")
         elif (item[0].type() == 1):
-            print("Es un Folder, Limpiare la pantalla y Obtendré la lista con sus hijos")
+            self.queueB.append(item[0].text())
+            text = item[0].text()
+            childs = self.bonsai_B._search(text)
+            self.TreeB.clear()
+            for i in range(len(childs)):
+                if (childs[i] == "." or childs[i]==".."):
+                    value = QtWidgets.QListWidgetItem(None,2)
+                    value.setText(childs[i])
+                    self.TreeB.addItem(value)
+        elif (item[0].type() == 2 and item[0].text()==".."):
+            print (self.queueB)
+            childs = self.bonsai_B._search(self.queueB[len(self.queueB)-1])
+            self.queueB.pop()
+            self.TreeB.clear()
+            for i in range(len(childs)):
+                if (childs[i] == "." or childs[i]==".."):
+                    value = QtWidgets.QListWidgetItem(None,2)
+                    value.setText(childs[i])
+                    self.TreeB.addItem(value)
+                elif (isinstance(childs[i],File_Node)):
+                    value = QtWidgets.QListWidgetItem(None,0)
+                    icon = QtGui.QIcon() #Instancia de un Icono
+                    icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                    value.setIcon(icon)
+                    value.setText(childs[i].name)
+                    self.TreeB.addItem(value)
+                elif (isinstance(childs[i],Directory_Node)):
+                    value = QtWidgets.QListWidgetItem(None,1)
+                    icon = QtGui.QIcon() #Instancia de un Icono
+                    icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                    value.setIcon(icon)
+                    value.setText(childs[i].name)
+                    self.TreeB.addItem(value)
 
     def _Warning(self,_type):
         infoBox = QtWidgets.QMessageBox()
         infoBox.setIcon(QtWidgets.QMessageBox.Warning)
-        infoBox.setWindowTitle("Warning")
+        infoBox.setWindowTitle("Error")
         if (_type=="File"):
             infoBox.setText("The File Already exist in the current Directory")
         else:
@@ -377,6 +414,6 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.label_2.setText(_translate("Explorer", "TREE B"))
         self.B_NewFolder.setText(_translate("Explorer", "New Folder"))
         self.B_NewFile.setText(_translate("Explorer", "New File"))
-        self.Back.setText(_translate("Explorer", "Back"))
+        self.About.setText(_translate("Explorer", "About"))
         self.B_to_A.setText(_translate("Explorer", "←"))
         self.A_NewFolder.setText(_translate("Explorer", "New Folder"))

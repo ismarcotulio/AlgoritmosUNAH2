@@ -1,66 +1,73 @@
-#Linked List almacena onjetos tipo Connect_Nodes los cuales se encargan de toda la estructura del Árbol
-
-from Resources.Connect_Nodes import *
-
 class LinkedList:
     def __init__(self):
         self.first = None
-        self.count = 0 #Se encarga de contar cuantos elementos hay en la lista enlazada
+        self.count = 0
 
-    def add(self,item, parent): #Función para agregar cualquier Nodo
-        self.AddInner(self.first,item,parent)
-        self.count+=1
+    def add(self, value,parent):
+        self.AddInner(self.first, value, parent)
+        self.count += 1
 
-    def AddInner(self, current,item,parent):
+    def AddInner(self, current, value, parent):
         if (current is None):
-            self.first = Connect_Nodes(item,parent)
+            self.first = value
+            value.parent = parent
         elif (current.next is None):
-            current.next = (Connect_Nodes(item,parent))
+            current.next = value
+            value.parent = parent
         else:
-            self.AddInner(current.next,item,parent)
+            self.AddInner(current.next,value,parent)
 
-    def search(self,name): #Función de búsqueda, devuelve la primera Instancia encontrada
-        return self.SearchInner(self.first,name)
+    def search(self,name): #Este Método busca en la lista actual no en todo el árbol
+        return self.searchInner(self.first, name)
 
-    def SearchInner(self,current,name):
+    def searchInner(self,current, name):
         if (current is None):
             return False
-        elif (current.item.name == name):
-            return current.item
+        elif (current.name == name):
+            return current
         else:
-            return self.SearchInner(current.next, name) 
+            return self.searchInner(current.next,name)
 
-    def getParent(self,value): # Devuelve quien es el padre de cualquier nodo
-        return self.getInnerParent(self.first,value)
+    def getParent(self,name): #Devuelve el padre de cualquier nodo en la lista actual
+        return self.getInnerParent(self.first, name)
 
-    def getInnerParent(self,current,name):
+    def getInnerParent(self, current, name):
         if (current is None):
             return False
-        elif (current.item.name == name):
-            return current.parent.name
+        elif (current.name == name):
+            return current.parent
         else:
-            return self.getInnerParent(current.next, name) 
+            return self.getInnerParent(current.next, name)
 
-    def getChild(self,value): # Devuelve quien es el padre de cualquier nodo
-        return self.getInnerChild(self.first,value)
-
-    def getInnerChild(self,current,name):
-        if (current is None):
-            return False
-        elif (current.item.name == name):
-            return current.item
-        else:
-            return self.getInnerParent(current.next, name) 
-
-
-    def NoDuplicate(self,name): #Ésta Funcion sirve para proteger la lista de archivos o Carpetas repetidas
+    def NoDuplicate(self,name): #Sirve para proteger a la lista de archivos o carpetas repetidas
         current = self.first
         verify = 0
         if (current is None):
             return verify
         else:
             while(current.next):
-                if (current.item.name == name):
-                    verify += 1
+                if (current.name == name):
+                    verify +=1
                 current = current.next
         return verify
+
+    def getChildrenList(self):
+        children = [".",".."]
+        current = self.first 
+        if (current is None):
+            return children
+        elif (current.parent == "/"):
+            children = []
+            while (current.next != None):
+                children.append(current)
+                current = current.next
+            children.append(current)
+        else:
+            while (current.next != None):
+                children.append(current)
+                current = current.next
+            children.append(current)
+        return children
+
+    def delete(self):
+        pass
