@@ -122,14 +122,14 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.B_NewFile.setStyleSheet("background-color: rgb(186, 189, 182);")
         self.B_NewFile.setObjectName("B_NewFile")
         
-        self.About = QtWidgets.QPushButton(self.centralwidget)
+        """self.About = QtWidgets.QPushButton(self.centralwidget)
         self.About.setGeometry(QtCore.QRect(320, 350, 81, 25))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
         self.About.setFont(font)
         self.About.setStyleSheet("background-color: rgb(186, 189, 182);")
-        self.About.setObjectName("About")
+        self.About.setObjectName("About")"""
         
         self.B_to_A = QtWidgets.QPushButton(self.centralwidget)
         self.B_to_A.setGeometry(QtCore.QRect(330, 180, 61, 31))
@@ -165,8 +165,6 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.B_to_A.clicked.connect(self._copyFromB)
         self.TreeA.itemDoubleClicked.connect(self.A_Navigator)
         self.TreeB.itemDoubleClicked.connect(self.B_Navigator)
-        self.About.clicked.connect(self.GoBack)
-
 
         QtCore.QMetaObject.connectSlotsByName(Explorer)
 
@@ -314,11 +312,21 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         elif (item[0].type() == 1):
             self.bonsai_A.moveTo(item[0].text())
             self.TreeA.clear()
+            
+            folder = QtWidgets.QListWidgetItem(None,2)
+            folder.setText(".")
+            back = QtWidgets.QListWidgetItem(None,2)
+            back.setText("..")
+            self.TreeA.addItem(folder)
+            self.TreeA.addItem(back)
+
             root = self.bonsai_A.root
             current = root.children.first
 
             self.A_currentChilds(current)
             print("Es un Folder, Limpiare la pantalla y Obtendré la lista con sus hijos")
+        elif (item[0].type() == 2 and item[0].text()==".."):
+            self.GoBack()
             
 
     def A_currentChilds(self,current):
@@ -346,8 +354,19 @@ class Ui_Explorer(QtWidgets.QMainWindow):
     def GoBack(self):
         if self.bonsai_A.root.name == "/":
             print("se encuentra en la raiz")
+        elif self.bonsai_A.root.parent.name == "/":
+            self.TreeA.clear()
+            self.bonsai_A.root = self.bonsai_A.root.parent
+            childs = self.bonsai_A.root.children
+            self.A_currentChilds(childs.first)
         else:
             self.TreeA.clear()
+            folder = QtWidgets.QListWidgetItem(None,2)
+            folder.setText(".")
+            back = QtWidgets.QListWidgetItem(None,2)
+            back.setText("..")
+            self.TreeA.addItem(folder)
+            self.TreeA.addItem(back)
             self.bonsai_A.root = self.bonsai_A.root.parent
             childs = self.bonsai_A.root.children
             self.A_currentChilds(childs.first) 
@@ -393,6 +412,6 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.label_2.setText(_translate("Explorer", "TREE B"))
         self.B_NewFolder.setText(_translate("Explorer", "New Folder"))
         self.B_NewFile.setText(_translate("Explorer", "New File"))
-        self.About.setText(_translate("Explorer", "Go Back"))
+        #self.About.setText(_translate("Explorer", "Go Back"))
         self.B_to_A.setText(_translate("Explorer", "←"))
         self.A_NewFolder.setText(_translate("Explorer", "New Folder"))
