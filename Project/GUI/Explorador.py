@@ -122,14 +122,14 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.B_NewFile.setStyleSheet("background-color: rgb(186, 189, 182);")
         self.B_NewFile.setObjectName("B_NewFile")
         
-        """self.About = QtWidgets.QPushButton(self.centralwidget)
+        self.About = QtWidgets.QPushButton(self.centralwidget)
         self.About.setGeometry(QtCore.QRect(320, 350, 81, 25))
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
         self.About.setFont(font)
         self.About.setStyleSheet("background-color: rgb(186, 189, 182);")
-        self.About.setObjectName("About")"""
+        self.About.setObjectName("About")
         
         self.B_to_A = QtWidgets.QPushButton(self.centralwidget)
         self.B_to_A.setGeometry(QtCore.QRect(330, 180, 61, 31))
@@ -156,6 +156,19 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.bonsai_A = Tree()
         self.bonsai_B = Tree()
 
+        self.versionLog=(
+            """
+                0.1.0 - (N-Ary Tree Implemented)\n
+                0.2.0 (GUI Implemented)\n
+                0.3.0 (Adding Files to Trees)\n
+                0.4.0 (Support Copying Files between Trees)\n
+                0.5.0 (Matrix To File Implemented)\n
+                1.0.0 (Support Browsing through Trees)\n
+                1.0.1 (Windows are now centered)\n
+                1.0.2 (Version Log Implemented)
+            """
+        )
+
         #Señales
         self.A_NewFile.clicked.connect(self.AddFile_A)
         self.B_NewFile.clicked.connect(self.AddFile_B)
@@ -165,12 +178,14 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.B_to_A.clicked.connect(self._copyFromB)
         self.TreeA.itemDoubleClicked.connect(self.A_Navigator)
         self.TreeB.itemDoubleClicked.connect(self.B_Navigator)
+        self.About.clicked.connect(self.showAbout)
 
         QtCore.QMetaObject.connectSlotsByName(Explorer)
 
     def AddFile_A(self):
-        self.centralwidget.setStyleSheet("background-color: rgb(192, 192, 192);")
-        text, okPressed = QInputDialog.getText(self.centralwidget, "New File","File Name:", QLineEdit.Normal, "")
+        cuadro = QInputDialog()
+        self.centralwidget.setStyleSheet("background-color: rgb(190,190,190);")
+        text, okPressed = cuadro.getText(self.centralwidget, "New File","File Name:", QLineEdit.Normal, "")
         self.centralwidget.setStyleSheet(self.backGround)
         if okPressed and text != '':
             file = File_Node(text) 
@@ -189,7 +204,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
 
     def AddFile_B(self):
         cuadro = QInputDialog()
-        self.centralwidget.setStyleSheet("background-color: rgb(192, 192, 192);")
+        self.centralwidget.setStyleSheet("background-color: rgb(190, 190, 190);")
         text, okPressed = cuadro.getText(self.centralwidget, "New File","File Name:", QLineEdit.Normal, "")
         self.centralwidget.setStyleSheet(self.backGround)
         if okPressed and text != '':
@@ -208,7 +223,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
 
     def AddDirectory_A(self):
         cuadro = QInputDialog()
-        self.centralwidget.setStyleSheet("background-color: rgb(192, 192, 192);")
+        self.centralwidget.setStyleSheet("background-color: rgb(190, 190, 190);")
         text, okPressed = cuadro.getText(self.centralwidget, "New Folder","Folder Name:", QLineEdit.Normal, "")
         self.centralwidget.setStyleSheet(self.backGround)
         if okPressed and text != '':
@@ -228,7 +243,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
 
     def AddDirectory_B(self):
         cuadro = QInputDialog()
-        self.centralwidget.setStyleSheet("background-color: rgb(192, 192, 192);")
+        self.centralwidget.setStyleSheet("background-color: rgb(190, 190, 190);")
         text, okPressed = cuadro.getText(self.centralwidget, "New Folder","Folder Name:", QLineEdit.Normal, "")
         self.centralwidget.setStyleSheet(self.backGround)
         if okPressed and text != '':
@@ -379,8 +394,9 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             print("Es un Folder, Limpiare la pantalla y Obtendré la lista con sus hijos")
 
     def _Warning(self,_type):
-        self.centralwidget.setStyleSheet("background-color: rgb(192, 192, 192);")
+        self.centralwidget.setStyleSheet("background-color: rgb(32, 32, 32);")
         infoBox = QtWidgets.QMessageBox(self.centralwidget)
+        infoBox.setStyleSheet("background-color: rgb(224, 224, 224);")
         infoBox.setIcon(QtWidgets.QMessageBox.Warning)
         infoBox.setWindowTitle("Warning")
         if (_type=="File"):
@@ -396,7 +412,22 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         qtRectangle = object.frameGeometry() 
         centerPoint = QtWidgets.QDesktopWidget().availableGeometry().center() 
         qtRectangle.moveCenter(centerPoint) 
-        object.move(qtRectangle.topLeft()) 
+        object.move(qtRectangle.topLeft())
+
+    def showAbout(self):
+        infoBox = QtWidgets.QMessageBox(self.centralwidget)
+        infoBox.setStyleSheet("background-color: rgb(224, 224, 224);")
+        icon = QtGui.QPixmap("Images/IS.png")
+        infoBox.setIconPixmap(icon)
+        infoBox.setWindowTitle("File Browser")
+        font = QtGui.QFont()
+        font.setItalic(True)
+        font.setWeight(70)
+        infoBox.setFont(font)
+        infoBox.setDetailedText(self.versionLog)
+        infoBox.setText("\n\tVersion 1.0.2\t\n\n\tAlexis Ochoa\n\tMarco Ruíz")
+
+        infoBox.exec_()
 
     def retranslateUi(self, Explorer):
         _translate = QtCore.QCoreApplication.translate
@@ -412,6 +443,6 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.label_2.setText(_translate("Explorer", "TREE B"))
         self.B_NewFolder.setText(_translate("Explorer", "New Folder"))
         self.B_NewFile.setText(_translate("Explorer", "New File"))
-        #self.About.setText(_translate("Explorer", "Go Back"))
+        self.About.setText(_translate("Explorer", "About"))
         self.B_to_A.setText(_translate("Explorer", "←"))
         self.A_NewFolder.setText(_translate("Explorer", "New Folder"))
