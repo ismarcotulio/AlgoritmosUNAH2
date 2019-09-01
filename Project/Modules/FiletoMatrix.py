@@ -1,4 +1,4 @@
-filename = "tree1.mem"
+filename = "../Memory/Tree1.mem"
 f = open(filename, "r")
 content = f.read()
 
@@ -43,10 +43,10 @@ print(tree2)
 
 print()
 
-print(tree2[1][0])
+"""print(tree2[1][0])
 print(tree2[1][1][1][1])
 print(tree2[1][3][2])
 print(tree2[1][4])
-print(tree2[1][2])
+print(tree2[1][2])"""
 
 f.close()

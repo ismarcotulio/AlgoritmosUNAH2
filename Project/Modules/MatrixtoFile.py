@@ -1,6 +1,6 @@
 tree = ["root/",["archivo1/",["archivo1.1/",["archivo1.1.1","archivo1.1.2"],"archivo1.2"],"archivo2/",["archivo2.2"],"archivo3"]]
 tree2 = [1,2,3]
-filename = "tree1.mem"
+filename = "../Memory/Tree1.mem"
 f = open(filename, "w+")
 
 def toFile(matrix = tree,tab = 0,fopen = f):
