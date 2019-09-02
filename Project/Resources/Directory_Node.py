@@ -1,9 +1,8 @@
-from Resources.LinkedList import *
 
 class Directory_Node:
     def __init__(self,name):
         self.name = name
-        self.children = LinkedList()
+        self.children = None
         self.next = None
         self.parent = None
 

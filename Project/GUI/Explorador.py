@@ -3,9 +3,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QInputDialog, QLineEdit
 
-from Resources.File_Node import *
-from Resources.Directory_Node import *
-from Resources.LinkedList import *
+
 from Resources.Tree import *
 
 
@@ -180,12 +178,9 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             file = File_Node(text) #Creamos un Nuevo Nodo File
             verify = self.bonsai_A.addChild(file) #Lo agregamos al árbol
             if (verify == True):
-                item = QtWidgets.QListWidgetItem(None,0) #Creamos una instancia de ListWidgetItem con tipo 0 para diferenciarlos de las carpetas
-                icon = QtGui.QIcon() #Instancia de un Icono
-                icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) #Usamos la funcion addPixmap para cargar un mapa de pixeles
-                item.setIcon(icon) #Establecemos el icono al nuevo Elemento
-                item.setText(text) #Establecemos el nombre del nuevo Elemento
-                self.TreeA.addItem(item) #Agregamos Visualmente el nuevo Elemento al árbol
+                self.TreeA.clear()
+                childs = self.bonsai_A.root.children
+                self.A_currentChilds(childs.first) 
             else:
                 del file
                 self._Warning("File")
@@ -216,12 +211,9 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             file = Directory_Node(text) #Creamos un Nuevo Nodo File
             verify = self.bonsai_A.addChild(file) #Lo agregamos al árbol
             if (verify == True):
-                item = QtWidgets.QListWidgetItem(None,1)
-                icon = QtGui.QIcon() #Instancia de un Icono
-                icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
-                item.setIcon(icon) 
-                item.setText(text) 
-                self.TreeA.addItem(item) 
+                self.TreeA.clear()
+                childs = self.bonsai_A.root.children
+                self.A_currentChilds(childs.first) 
             else:
                 del file
                 self._Warning("Folder")
@@ -312,6 +304,8 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             self.bonsai_A.moveTo(item[0].text())
             self.TreeA.clear()
             root = self.bonsai_A.root
+            if root.children == None:
+                root.children = LinkedList()
             current = root.children.first
 
             self.A_currentChilds(current)
@@ -322,14 +316,25 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         if current is None:
             return True
         else:
-            text = current.name
-            item = QtWidgets.QListWidgetItem(None,1)
-            icon = QtGui.QIcon() #Instancia de un Icono
-            icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
-            item.setIcon(icon) 
-            item.setText(text)
-            self.TreeA.addItem(item)
-            self.A_currentChilds(current.next)
+            if isinstance(current,Directory_Node):
+                text = current.name
+                item = QtWidgets.QListWidgetItem(None,1)
+                icon = QtGui.QIcon() #Instancia de un Icono
+                icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
+                item.setIcon(icon) 
+                item.setText(text)
+                self.TreeA.addItem(item)
+                self.A_currentChilds(current.next)
+            else:
+                text = current.name
+                item = QtWidgets.QListWidgetItem(None,0) #Creamos una instancia de ListWidgetItem con tipo 0 para diferenciarlos de las carpetas
+                icon = QtGui.QIcon() #Instancia de un Icono
+                icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) #Usamos la funcion addPixmap para cargar un mapa de pixeles
+                item.setIcon(icon) #Establecemos el icono al nuevo Elemento
+                item.setText(text) #Establecemos el nombre del nuevo Elemento
+                self.TreeA.addItem(item)
+                self.A_currentChilds(current.next)
+
 
 
     def GoBack(self):
