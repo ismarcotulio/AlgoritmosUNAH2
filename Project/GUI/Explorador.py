@@ -190,9 +190,20 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             file = File_Node(text) 
             verify = self.bonsai_A.addChild(file) 
             if (verify == True):
-                self.TreeA.clear()
-                childs = self.bonsai_A.root.children
-                self.A_currentChilds(childs.first) 
+                if self.bonsai_A.root.name == "/":
+                    self.TreeA.clear()
+                    childs = self.bonsai_A.root.children
+                    self.A_currentChilds(childs.first)
+                else:
+                    self.TreeA.clear()
+                    folder = QtWidgets.QListWidgetItem(None,2)
+                    folder.setText(".")
+                    back = QtWidgets.QListWidgetItem(None,2)
+                    back.setText("..")
+                    self.TreeA.addItem(folder)
+                    self.TreeA.addItem(back)
+                    childs = self.bonsai_A.root.children
+                    self.A_currentChilds(childs.first)
             else:
                 del file
                 self._Warning("File")
@@ -226,9 +237,20 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             file = Directory_Node(text) 
             verify = self.bonsai_A.addChild(file) 
             if (verify == True):
-                self.TreeA.clear()
-                childs = self.bonsai_A.root.children
-                self.A_currentChilds(childs.first) 
+                if self.bonsai_A.root.name == "/":
+                    self.TreeA.clear()
+                    childs = self.bonsai_A.root.children
+                    self.A_currentChilds(childs.first)
+                else:
+                    self.TreeA.clear()
+                    folder = QtWidgets.QListWidgetItem(None,2)
+                    folder.setText(".")
+                    back = QtWidgets.QListWidgetItem(None,2)
+                    back.setText("..")
+                    self.TreeA.addItem(folder)
+                    self.TreeA.addItem(back)
+                    childs = self.bonsai_A.root.children
+                    self.A_currentChilds(childs.first)                 
             else:
                 del file
                 self._Warning("Folder")
