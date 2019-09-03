@@ -1,5 +1,5 @@
-from Resources.File_Node import *
-from Resources.Directory_Node import *
+from Resources.LinkedList import *
+
 
 class Tree:
     def __init__(self):
@@ -14,6 +14,8 @@ class Tree:
         elif (isinstance(parent,File_Node)):
             print("Un Archivo no puede Tener hijos")        
             return False
+        if parent.children == None:
+            parent.children = LinkedList()
 
         verify = parent.children.search(item.name)
         clone = parent.children.NoDuplicate(item.name)
