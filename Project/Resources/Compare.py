@@ -3,7 +3,7 @@ from Resources.Directory_Node import *
 
 class Compare:
     def __init__(self):
-        self.alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        self.alphabet = ".0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
     def lesserLength(self, str1, str2):
         lesser = len(str1)
@@ -31,23 +31,19 @@ class Compare:
                 return 0
             else:
                 return -1
+        lesser = self.lesserLength(str1,str2)
+        for i in range(lesser):
+            if self.alphabet.index(str1[i]) > self.alphabet.index(str2[i]):
+                return 1
+            elif self.alphabet.index(str1[i]) < self.alphabet.index(str2[i]):
+                return -1
+            
+        if len(str1) == len(str2):
+            return 0
+        elif(len(str1) == lesser):
+            return -1
         else:
-            lesser = self.lesserLength(str1,str2)
-            for i in range(lesser):
-                if self.alphabet.index(str1[i]) > self.alphabet.index(str2[i]):
-                    return 1
-                elif self.alphabet.index(str1[i]) < self.alphabet.index(str2[i]):
-                    return -1
-                else:
-
-                    if len(str1) == len(str2):
-                        return 0
-
-                    elif(len(str1) == lesser):
-                        return -1
-
-                    else:
-                        return 1
+            return 1
        
 
 

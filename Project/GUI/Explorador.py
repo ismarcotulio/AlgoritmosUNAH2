@@ -176,7 +176,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.B_to_A.clicked.connect(self._copyFromB)
         self.TreeA.itemDoubleClicked.connect(self.A_Navigator)
         self.TreeB.itemDoubleClicked.connect(self.B_Navigator)
-        self.About.clicked.connect(self.showAbout)
+        self.About.clicked.connect(self.A_Traversal)
 
 
         QtCore.QMetaObject.connectSlotsByName(Explorer)
@@ -410,6 +410,10 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             print("Es una carpeta, No haré Nada")
         elif (item[0].type() == 1):
             print("Es un Folder, Limpiare la pantalla y Obtendré la lista con sus hijos")
+
+    def A_Traversal(self):
+        self.bonsai_A.traversal(self.bonsai_A.root)
+
 
     def _Warning(self,_type):
         self.centralwidget.setStyleSheet("background-color: rgb(32, 32, 32);")

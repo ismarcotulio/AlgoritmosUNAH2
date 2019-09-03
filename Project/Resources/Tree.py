@@ -63,3 +63,16 @@ class Tree:
             parent = self.root
 
         return parent.children.NoDuplicate(name)
+
+    def traversal(self, node):
+        if isinstance(node,Directory_Node) == True:
+            print("directorio"+str(node.name))
+            queue = []
+            current = node.children.first
+            while current != None:
+                queue.append(current)
+                current = current.next
+            for i in range(len(queue)):
+                self.traversal(queue[i])
+        else:
+            print("Archivo:"+str(node.name))
