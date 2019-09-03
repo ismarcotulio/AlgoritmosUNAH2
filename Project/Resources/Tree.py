@@ -76,3 +76,8 @@ class Tree:
                 self.traversal(queue[i])
         else:
             print("Archivo:"+str(node.name))
+
+    def getFirstRoot(self, node):
+        while node.parent != None:
+            node = node.parent
+        return node

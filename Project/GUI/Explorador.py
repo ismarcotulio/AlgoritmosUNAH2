@@ -4,6 +4,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QInputDialog, QLineEdit
 
 from Resources.Tree import *
+from Resources.Memory import *
 
 class Ui_Explorer(QtWidgets.QMainWindow):
 
@@ -176,7 +177,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.B_to_A.clicked.connect(self._copyFromB)
         self.TreeA.itemDoubleClicked.connect(self.A_Navigator)
         self.TreeB.itemDoubleClicked.connect(self.B_Navigator)
-        self.About.clicked.connect(self.A_Traversal)
+        self.About.clicked.connect(self.A_Save)
 
 
         QtCore.QMetaObject.connectSlotsByName(Explorer)
@@ -411,9 +412,11 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         elif (item[0].type() == 1):
             print("Es un Folder, Limpiare la pantalla y Obtendré la lista con sus hijos")
 
-    def A_Traversal(self):
-        self.bonsai_A.traversal(self.bonsai_A.root)
-
+    def A_Save(self):
+        mem = Memory()
+        FirstRoot = self.bonsai_A.getFirstRoot(self.bonsai_A.root)
+        mem.TreeToMatrix(FirstRoot)
+        mem.MatrixToFile()
 
     def _Warning(self,_type):
         self.centralwidget.setStyleSheet("background-color: rgb(32, 32, 32);")
