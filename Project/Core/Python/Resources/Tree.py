@@ -1,8 +1,4 @@
-from Resources.LinkedList import *
-<<<<<<< HEAD
-=======
-
->>>>>>> a79cd3674bb7a9027b9354046cb6b34c6695f319
+from Core.Python.Resources.LinkedList import *
 
 class Tree:
     def __init__(self):

@@ -1,4 +1,4 @@
-from GUI.Explorador import * 
+from Core.Python.GUI.Explorador import *
 
 if __name__ == "__main__":
     import sys

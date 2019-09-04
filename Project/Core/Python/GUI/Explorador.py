@@ -3,8 +3,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QInputDialog, QLineEdit
 
-from Resources.Tree import *
-from Resources.Memory import *
+from Core.Python.Resources.Tree import *
+from Core.Python.Resources.Memory import *
 
 class Ui_Explorer(QtWidgets.QMainWindow):
 
@@ -151,8 +151,29 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         Explorer.setCentralWidget(self.centralwidget)
         self.retranslateUi(Explorer)
 
-        self.bonsai_A = Tree()
-        self.bonsai_B = Tree()
+        #Función para cargar los Árboles TSV
+        mem = Memory() 
+        verify = mem.Load("Memory/TreeA.mem")
+        if verify == True:
+            self.bonsai_A = mem.tree
+            childs = self.bonsai_A.root.children
+            self.A_currentChilds(childs.first)
+            print(mem.matrix[0][1])
+            print(self.bonsai_A.root.name)
+        else:
+            self.bonsai_A = Tree()
+
+        memB = Memory() 
+        verify = memB.Load("Memory/TreeB.mem")
+        if verify == True:
+            self.bonsai_B = memB.tree
+            childsB = self.bonsai_B.root.children
+            self.B_currentChilds(childsB.first)
+            print(memB.matrix[0][1])
+            print(self.bonsai_B.root.name)
+        else:
+            self.bonsai_B = Tree()
+
 
 
         self.versionLog=(
@@ -166,7 +187,9 @@ class Ui_Explorer(QtWidgets.QMainWindow):
                 1.0.1 (Windows are now centered)\n
                 1.0.2 (Version Log Implemented)\n
                 1.1.2 (Folders are shown first and sorted)\n
-                1.3.2 (Trees are now Stored into TSV Files)
+                1.3.2 (Trees are now Stored into TSV Files)\n
+                1.3.3 (Tress are now Loaded from Files)\n
+                1.4.3 (Delete Implemented)
             """
         )
 
@@ -182,7 +205,6 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.About.clicked.connect(self.showAbout)
         self.A_Delete.clicked.connect(self.DeleteA)
         self.B_Delete.clicked.connect(self.DeleteB)
-
 
         QtCore.QMetaObject.connectSlotsByName(Explorer)
 
@@ -305,7 +327,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
                 if (verify == True):
                     item = QtWidgets.QListWidgetItem(None,0) 
                     icon = QtGui.QIcon()
-                    icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+                    icon.addPixmap(QtGui.QPixmap("Core/Python/Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
                     item.setIcon(icon)
                     item.setText(items[i].text())
                     self.TreeB.addItem(item)
@@ -318,7 +340,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
                 if (verify == True):
                     item = QtWidgets.QListWidgetItem(None,1)
                     icon = QtGui.QIcon() 
-                    icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
+                    icon.addPixmap(QtGui.QPixmap("Core/Python/Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
                     item.setIcon(icon) 
                     item.setText(items[i].text())
                     self.TreeB.addItem(item)
@@ -335,7 +357,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
                 if (verify == True):
                     item = QtWidgets.QListWidgetItem(None,0) 
                     icon = QtGui.QIcon() #Instancia de un Icono
-                    icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
+                    icon.addPixmap(QtGui.QPixmap("Core/Python/Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
                     item.setIcon(icon) 
                     item.setText(items[i].text())
                     self.TreeA.addItem(item)
@@ -348,7 +370,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
                 if (verify == True):
                     item = QtWidgets.QListWidgetItem(None,1)
                     icon = QtGui.QIcon() #Instancia de un Icono
-                    icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
+                    icon.addPixmap(QtGui.QPixmap("Core/Python/Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
                     item.setIcon(icon) 
                     item.setText(items[i].text())
                     self.TreeA.addItem(item)
@@ -414,7 +436,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
                 text = current.name
                 item = QtWidgets.QListWidgetItem(None,1)
                 icon = QtGui.QIcon() #Instancia de un Icono
-                icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
+                icon.addPixmap(QtGui.QPixmap("Core/Python/Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
                 item.setIcon(icon) 
                 item.setText(text)
                 self.TreeA.addItem(item)
@@ -423,13 +445,12 @@ class Ui_Explorer(QtWidgets.QMainWindow):
                 text = current.name
                 item = QtWidgets.QListWidgetItem(None,0) #Creamos una instancia de ListWidgetItem con tipo 0 para diferenciarlos de las carpetas
                 icon = QtGui.QIcon() #Instancia de un Icono
-                icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) #Usamos la funcion addPixmap para cargar un mapa de pixeles
+                icon.addPixmap(QtGui.QPixmap("Core/Python/Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) #Usamos la funcion addPixmap para cargar un mapa de pixeles
                 item.setIcon(icon) #Establecemos el icono al nuevo Elemento
                 item.setText(text) #Establecemos el nombre del nuevo Elemento
                 self.TreeA.addItem(item)
                 self.A_currentChilds(current.next)
 
-<<<<<<< HEAD
     def B_currentChilds(self,current):
         if current is None:
             return True
@@ -438,7 +459,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
                 text = current.name
                 item = QtWidgets.QListWidgetItem(None,1)
                 icon = QtGui.QIcon() #Instancia de un Icono
-                icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
+                icon.addPixmap(QtGui.QPixmap("Core/Python/Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
                 item.setIcon(icon) 
                 item.setText(text)
                 self.TreeB.addItem(item)
@@ -447,16 +468,13 @@ class Ui_Explorer(QtWidgets.QMainWindow):
                 text = current.name
                 item = QtWidgets.QListWidgetItem(None,0) #Creamos una instancia de ListWidgetItem con tipo 0 para diferenciarlos de las carpetas
                 icon = QtGui.QIcon() #Instancia de un Icono
-                icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) #Usamos la funcion addPixmap para cargar un mapa de pixeles
+                icon.addPixmap(QtGui.QPixmap("Core/Python/Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) #Usamos la funcion addPixmap para cargar un mapa de pixeles
                 item.setIcon(icon) #Establecemos el icono al nuevo Elemento
                 item.setText(text) #Establecemos el nombre del nuevo Elemento
                 self.TreeB.addItem(item)
                 self.B_currentChilds(current.next)
 
     def GoBack_A(self):
-=======
-    def GoBack(self):
->>>>>>> a79cd3674bb7a9027b9354046cb6b34c6695f319
         if self.bonsai_A.root.name == "/":
             print("se encuentra en la raiz")
         elif self.bonsai_A.root.parent.name == "/":
@@ -584,7 +602,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
     def showAbout(self):
         infoBox = QtWidgets.QMessageBox(self.centralwidget)
         infoBox.setStyleSheet("background-color: rgb(224, 224, 224);")
-        icon = QtGui.QPixmap("Images/IS.png")
+        icon = QtGui.QPixmap("Core/Python/Images/IS.png")
         infoBox.setIconPixmap(icon)
         infoBox.setWindowTitle("File Browser")
         font = QtGui.QFont()
@@ -592,7 +610,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         font.setWeight(70)
         infoBox.setFont(font)
         infoBox.setDetailedText(self.versionLog)
-        infoBox.setText("\n\tVersion 1.3.2\t\n\n\tAlexis Ochoa\n\tMarco Ruíz")
+        infoBox.setText("\n\tVersion 1.4.3\t\n\n\tAlexis Ochoa\n\tMarco Ruíz")
 
         infoBox.exec_()
 
@@ -603,10 +621,10 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         mem.MatrixToFile("Memory/TreeA.mem")
 
     def B_Save(self):
-        mem = Memory()
+        memB = Memory()
         FirstRoot = self.bonsai_B.getFirstRoot(self.bonsai_B.root)
-        mem.TreeToMatrix(FirstRoot)
-        mem.MatrixToFile("Memory/TreeB.mem")
+        memB.TreeToMatrix(FirstRoot)
+        memB.MatrixToFile("Memory/TreeB.mem")
 
     def retranslateUi(self, Explorer):
         _translate = QtCore.QCoreApplication.translate

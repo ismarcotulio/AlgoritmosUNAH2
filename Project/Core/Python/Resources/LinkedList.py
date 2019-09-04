@@ -1,12 +1,8 @@
 #Linked List almacena onjetos tipo Connect_Nodes los cuales se encargan de toda la estructura del Árbol
 
-from Resources.Compare import *
-from Resources.Directory_Node import *
-from Resources.File_Node import *
-<<<<<<< HEAD
-=======
-
->>>>>>> a79cd3674bb7a9027b9354046cb6b34c6695f319
+from Core.Python.Resources.Compare import *
+from Core.Python.Resources.Directory_Node import *
+from Core.Python.Resources.File_Node import *
 
 class LinkedList:
     def __init__(self):
@@ -160,12 +156,6 @@ class LinkedList:
                             current = current.next
                         current.next = item
                         current.next.parent = parent
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> a79cd3674bb7a9027b9354046cb6b34c6695f319
 
     def search(self,name): #Función de búsqueda, devuelve la primera Instancia encontrada
         return self.SearchInner(self.first,name)
@@ -183,11 +173,13 @@ class LinkedList:
             print("No hay nada que borrar")
             return False
         elif (self.first.next is None and self.first.name == name):
+            self.SubTree(self.first)
             self.first = None
             print ("Se borró el nodo %s con exito" % name)
             self.count -=1
             return True
         elif (self.first.next and self.first.name == name):
+            self.SubTree(self.first)
             current = self.first
             self.first = self.first.next
             current.next = None
@@ -200,6 +192,7 @@ class LinkedList:
             while (current.next and current.name != name):
                 previous = current
                 current = current.next
+            self.SubTree(current)
             previous.next = current.next 
             current.next = None
         self.count -= 1
@@ -239,3 +232,20 @@ class LinkedList:
                     verify += 1
                 current = current.next
         return verify
+
+    def SubTree(self, node):
+        queue = []
+
+        if (isinstance(node,File_Node)):
+            queue.append(node)
+        elif (isinstance(node,Directory_Node)):
+            if (node.children != None):
+                current = node.children.first
+                while (current != None):
+                    queue.append(current)
+                    current = current.next
+                for i in range (len(queue)):
+                    self.SubTree(queue[i])
+        for i in range(len(queue)):
+            print("Se borró el Nodo %s" % queue[i].name)
+            queue[i] = None

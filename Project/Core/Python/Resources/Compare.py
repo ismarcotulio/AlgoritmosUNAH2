@@ -1,5 +1,5 @@
-from Resources.File_Node import *
-from Resources.Directory_Node import *
+from Core.Python.Resources.File_Node import *
+from Core.Python.Resources.Directory_Node import *
 
 class Compare:
     def __init__(self):
@@ -38,7 +38,6 @@ class Compare:
                     return 1
                 elif self.alphabet.index(str1[i]) < self.alphabet.index(str2[i]):
                     return -1
-<<<<<<< HEAD
 
             if len(str1) == len(str2):
                 return 0
@@ -46,21 +45,3 @@ class Compare:
                 return -1
             else:
                 return 1
-=======
-                else:
-
-                    if len(str1) == len(str2):
-                        return 0
-
-                    elif(len(str1) == lesser):
-                        return -1
-
-                    else:
-                        return 1
-       
-
-
-
-
-
->>>>>>> a79cd3674bb7a9027b9354046cb6b34c6695f319
