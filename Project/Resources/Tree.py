@@ -1,5 +1,4 @@
-from Resources.File_Node import *
-from Resources.Directory_Node import *
+from Resources.LinkedList import *
 
 class Tree:
     def __init__(self):
@@ -14,6 +13,8 @@ class Tree:
         elif (isinstance(parent,File_Node)):
             print("Un Archivo no puede Tener hijos")        
             return False
+        if parent.children == None:
+            parent.children = LinkedList()
 
         verify = parent.children.search(item.name)
         clone = parent.children.NoDuplicate(item.name)
@@ -54,10 +55,26 @@ class Tree:
         print("La ruta actual es %s"%self.root.name)
         return True
 
-
-
     def protection(self,name,parent = None):
         if (parent is None):
             parent = self.root
 
         return parent.children.NoDuplicate(name)
+
+    def traversal(self, node):
+        if isinstance(node,Directory_Node) == True:
+            print("directorio"+str(node.name))
+            queue = []
+            current = node.children.first
+            while current != None:
+                queue.append(current)
+                current = current.next
+            for i in range(len(queue)):
+                self.traversal(queue[i])
+        else:
+            print("Archivo:"+str(node.name))
+
+    def getFirstRoot(self, node):
+        while node.parent != None:
+            node = node.parent
+        return node

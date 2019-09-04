@@ -3,10 +3,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QInputDialog, QLineEdit
 
-from Resources.File_Node import *
-from Resources.Directory_Node import *
-from Resources.LinkedList import *
 from Resources.Tree import *
+from Resources.Memory import *
 
 class Ui_Explorer(QtWidgets.QMainWindow):
 
@@ -156,6 +154,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.bonsai_A = Tree()
         self.bonsai_B = Tree()
 
+
         self.versionLog=(
             """
                 0.1.0 - (N-Ary Tree Implemented)\n
@@ -165,7 +164,9 @@ class Ui_Explorer(QtWidgets.QMainWindow):
                 0.5.0 (Matrix To File Implemented)\n
                 1.0.0 (Support Browsing through Trees)\n
                 1.0.1 (Windows are now centered)\n
-                1.0.2 (Version Log Implemented)
+                1.0.2 (Version Log Implemented)\n
+                1.1.2 (Folders are shown first and sorted)\n
+                1.3.2 (Trees are now Stored into TSV Files)
             """
         )
 
@@ -179,6 +180,8 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.TreeA.itemDoubleClicked.connect(self.A_Navigator)
         self.TreeB.itemDoubleClicked.connect(self.B_Navigator)
         self.About.clicked.connect(self.showAbout)
+        self.A_Delete.clicked.connect(self.DeleteA)
+        self.B_Delete.clicked.connect(self.DeleteB)
 
         QtCore.QMetaObject.connectSlotsByName(Explorer)
 
@@ -191,12 +194,20 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             file = File_Node(text) 
             verify = self.bonsai_A.addChild(file) 
             if (verify == True):
-                item = QtWidgets.QListWidgetItem(None,0) 
-                icon = QtGui.QIcon() #Instancia de un Icono
-                icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-                item.setIcon(icon)
-                item.setText(text) 
-                self.TreeA.addItem(item) 
+                if self.bonsai_A.root.name == "/":
+                    self.TreeA.clear()
+                    childs = self.bonsai_A.root.children
+                    self.A_currentChilds(childs.first)
+                else:
+                    self.TreeA.clear()
+                    folder = QtWidgets.QListWidgetItem(None,2)
+                    folder.setText(".")
+                    back = QtWidgets.QListWidgetItem(None,2)
+                    back.setText("..")
+                    self.TreeA.addItem(folder)
+                    self.TreeA.addItem(back)
+                    childs = self.bonsai_A.root.children
+                    self.A_currentChilds(childs.first)
             else:
                 del file
                 self._Warning("File")
@@ -204,19 +215,27 @@ class Ui_Explorer(QtWidgets.QMainWindow):
 
     def AddFile_B(self):
         cuadro = QInputDialog()
-        self.centralwidget.setStyleSheet("background-color: rgb(190, 190, 190);")
+        self.centralwidget.setStyleSheet("background-color: rgb(190,190,190);")
         text, okPressed = cuadro.getText(self.centralwidget, "New File","File Name:", QLineEdit.Normal, "")
         self.centralwidget.setStyleSheet(self.backGround)
         if okPressed and text != '':
             file = File_Node(text) 
             verify = self.bonsai_B.addChild(file) 
             if (verify == True):
-                item = QtWidgets.QListWidgetItem(None,0)
-                icon = QtGui.QIcon() #Instancia de un Icono
-                icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
-                item.setIcon(icon) 
-                item.setText(text) 
-                self.TreeB.addItem(item)
+                if self.bonsai_B.root.name == "/":
+                    self.TreeB.clear()
+                    childs = self.bonsai_B.root.children
+                    self.B_currentChilds(childs.first)
+                else:
+                    self.TreeB.clear()
+                    folder = QtWidgets.QListWidgetItem(None,2)
+                    folder.setText(".")
+                    back = QtWidgets.QListWidgetItem(None,2)
+                    back.setText("..")
+                    self.TreeB.addItem(folder)
+                    self.TreeB.addItem(back)
+                    childs = self.bonsai_B.root.children
+                    self.B_currentChilds(childs.first)
             else:
                 del file
                 self._Warning("File")
@@ -230,12 +249,20 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             file = Directory_Node(text) 
             verify = self.bonsai_A.addChild(file) 
             if (verify == True):
-                item = QtWidgets.QListWidgetItem(None,1)
-                icon = QtGui.QIcon() #Instancia de un Icono
-                icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
-                item.setIcon(icon) 
-                item.setText(text) 
-                self.TreeA.addItem(item) 
+                if self.bonsai_A.root.name == "/":
+                    self.TreeA.clear()
+                    childs = self.bonsai_A.root.children
+                    self.A_currentChilds(childs.first)
+                else:
+                    self.TreeA.clear()
+                    folder = QtWidgets.QListWidgetItem(None,2)
+                    folder.setText(".")
+                    back = QtWidgets.QListWidgetItem(None,2)
+                    back.setText("..")
+                    self.TreeA.addItem(folder)
+                    self.TreeA.addItem(back)
+                    childs = self.bonsai_A.root.children
+                    self.A_currentChilds(childs.first)                 
             else:
                 del file
                 self._Warning("Folder")
@@ -250,12 +277,20 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             file = Directory_Node(text) 
             verify = self.bonsai_B.addChild(file) 
             if (verify == True):
-                item = QtWidgets.QListWidgetItem(None,1)
-                icon = QtGui.QIcon() #Instancia de un Icono
-                icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
-                item.setIcon(icon) 
-                item.setText(text)
-                self.TreeB.addItem(item)
+                if self.bonsai_B.root.name == "/":
+                    self.TreeB.clear()
+                    childs = self.bonsai_B.root.children
+                    self.B_currentChilds(childs.first)
+                else:
+                    self.TreeB.clear()
+                    folder = QtWidgets.QListWidgetItem(None,2)
+                    folder.setText(".")
+                    back = QtWidgets.QListWidgetItem(None,2)
+                    back.setText("..")
+                    self.TreeB.addItem(folder)
+                    self.TreeB.addItem(back)
+                    childs = self.bonsai_B.root.children
+                    self.B_currentChilds(childs.first)                 
             else:
                 del file
                 self._Warning("Folder")
@@ -336,37 +371,87 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             self.TreeA.addItem(back)
 
             root = self.bonsai_A.root
+            if root.children == None:
+                root.children = LinkedList()
             current = root.children.first
 
             self.A_currentChilds(current)
             print("Es un Folder, Limpiare la pantalla y Obtendré la lista con sus hijos")
         elif (item[0].type() == 2 and item[0].text()==".."):
-            self.GoBack()
+            self.GoBack_A()
+
+    def B_Navigator(self):
+        item = self.TreeB.selectedItems()
+        if (item[0].type() == 0):
+            print("Es un Archivo, No haré Nada")
+        elif (item[0].type() == 1):
+            self.bonsai_B.moveTo(item[0].text())
+            self.TreeB.clear()
             
+            folder = QtWidgets.QListWidgetItem(None,2)
+            folder.setText(".")
+            back = QtWidgets.QListWidgetItem(None,2)
+            back.setText("..")
+            self.TreeB.addItem(folder)
+            self.TreeB.addItem(back)
+
+            root = self.bonsai_B.root
+            if root.children == None:
+                root.children = LinkedList()
+            current = root.children.first
+
+            self.B_currentChilds(current)
+            print("Es un Folder, Limpiare la pantalla y Obtendré la lista con sus hijos")
+        elif (item[0].type() == 2 and item[0].text()==".."):
+            self.GoBack_B()  
 
     def A_currentChilds(self,current):
         if current is None:
             return True
-        elif (isinstance(current,Directory_Node)):
-            text = current.name
-            item = QtWidgets.QListWidgetItem(None,1)
-            icon = QtGui.QIcon() #Instancia de un Icono
-            icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
-            item.setIcon(icon) 
-            item.setText(text)
-            self.TreeA.addItem(item)
-            self.A_currentChilds(current.next)
-        elif (isinstance(current,File_Node)):
-            text = current.name
-            item = QtWidgets.QListWidgetItem(None,0)
-            icon = QtGui.QIcon() #Instancia de un Icono
-            icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
-            item.setIcon(icon) 
-            item.setText(text)
-            self.TreeA.addItem(item)
-            self.A_currentChilds(current.next)
+        else:
+            if isinstance(current,Directory_Node):
+                text = current.name
+                item = QtWidgets.QListWidgetItem(None,1)
+                icon = QtGui.QIcon() #Instancia de un Icono
+                icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
+                item.setIcon(icon) 
+                item.setText(text)
+                self.TreeA.addItem(item)
+                self.A_currentChilds(current.next)
+            else:
+                text = current.name
+                item = QtWidgets.QListWidgetItem(None,0) #Creamos una instancia de ListWidgetItem con tipo 0 para diferenciarlos de las carpetas
+                icon = QtGui.QIcon() #Instancia de un Icono
+                icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) #Usamos la funcion addPixmap para cargar un mapa de pixeles
+                item.setIcon(icon) #Establecemos el icono al nuevo Elemento
+                item.setText(text) #Establecemos el nombre del nuevo Elemento
+                self.TreeA.addItem(item)
+                self.A_currentChilds(current.next)
 
-    def GoBack(self):
+    def B_currentChilds(self,current):
+        if current is None:
+            return True
+        else:
+            if isinstance(current,Directory_Node):
+                text = current.name
+                item = QtWidgets.QListWidgetItem(None,1)
+                icon = QtGui.QIcon() #Instancia de un Icono
+                icon.addPixmap(QtGui.QPixmap("Images/folder.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) 
+                item.setIcon(icon) 
+                item.setText(text)
+                self.TreeB.addItem(item)
+                self.B_currentChilds(current.next)
+            else:
+                text = current.name
+                item = QtWidgets.QListWidgetItem(None,0) #Creamos una instancia de ListWidgetItem con tipo 0 para diferenciarlos de las carpetas
+                icon = QtGui.QIcon() #Instancia de un Icono
+                icon.addPixmap(QtGui.QPixmap("Images/file.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off) #Usamos la funcion addPixmap para cargar un mapa de pixeles
+                item.setIcon(icon) #Establecemos el icono al nuevo Elemento
+                item.setText(text) #Establecemos el nombre del nuevo Elemento
+                self.TreeB.addItem(item)
+                self.B_currentChilds(current.next)
+
+    def GoBack_A(self):
         if self.bonsai_A.root.name == "/":
             print("se encuentra en la raiz")
         elif self.bonsai_A.root.parent.name == "/":
@@ -386,12 +471,25 @@ class Ui_Explorer(QtWidgets.QMainWindow):
             childs = self.bonsai_A.root.children
             self.A_currentChilds(childs.first) 
 
-    def B_Navigator(self):
-        item = self.TreeB.selectedItems()
-        if (item[0].type() == 0):
-            print("Es una carpeta, No haré Nada")
-        elif (item[0].type() == 1):
-            print("Es un Folder, Limpiare la pantalla y Obtendré la lista con sus hijos")
+    def GoBack_B(self):
+        if self.bonsai_B.root.name == "/":
+            print("se encuentra en la raiz")
+        elif self.bonsai_B.root.parent.name == "/":
+            self.TreeB.clear()
+            self.bonsai_B.root = self.bonsai_B.root.parent
+            childs = self.bonsai_B.root.children
+            self.B_currentChilds(childs.first)
+        else:
+            self.TreeB.clear()
+            folder = QtWidgets.QListWidgetItem(None,2)
+            folder.setText(".")
+            back = QtWidgets.QListWidgetItem(None,2)
+            back.setText("..")
+            self.TreeB.addItem(folder)
+            self.TreeB.addItem(back)
+            self.bonsai_B.root = self.bonsai_B.root.parent
+            childs = self.bonsai_B.root.children
+            self.B_currentChilds(childs.first)
 
     def _Warning(self,_type):
         self.centralwidget.setStyleSheet("background-color: rgb(32, 32, 32);")
@@ -407,6 +505,70 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         infoBox.exec_()
 
         self.centralwidget.setStyleSheet(self.backGround)
+
+    def DeleteA (self):
+        items = self.TreeA.selectedItems()
+        lista = list(map(lambda x:x.text(),items))
+        lista = "\t" + "\n\n\t".join(lista)
+        areYouSure = QtWidgets.QMessageBox(self.centralwidget)
+        areYouSure.setStyleSheet("background-color: rgb(224, 224, 224);")
+        areYouSure.setIcon(QtWidgets.QMessageBox.Question)
+        areYouSure.setWindowTitle("Confirmation")
+        areYouSure.setText("Are you Sure you want to Delete the Current Nodes?\n All content will be Lost.")
+        areYouSure.setDetailedText(lista)
+        areYouSure.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel)
+        returnValue = areYouSure.exec_()
+
+        if (returnValue == QtWidgets.QMessageBox.Yes):
+            for i in range (len(items)):
+                self.bonsai_A.root.children._delete(items[i].text())
+
+            if (self.bonsai_A.root.name == "/"):
+                self.TreeA.clear()
+                self.A_currentChilds(self.bonsai_A.root.children.first)
+            else:
+                self.TreeA.clear()
+                folder = QtWidgets.QListWidgetItem(None,2)
+                folder.setText(".")
+                back = QtWidgets.QListWidgetItem(None,2)
+                back.setText("..")
+                self.TreeA.addItem(folder)
+                self.TreeA.addItem(back)
+                self.A_currentChilds(self.bonsai_A.root.children.first)
+        else:
+            print("Mision Abortada")
+
+    def DeleteB (self):
+        items = self.TreeB.selectedItems()
+        lista = list(map(lambda x:x.text(),items))
+        lista = "\t" + "\n\n\t".join(lista)
+        areYouSure = QtWidgets.QMessageBox(self.centralwidget)
+        areYouSure.setStyleSheet("background-color: rgb(224, 224, 224);")
+        areYouSure.setIcon(QtWidgets.QMessageBox.Question)
+        areYouSure.setWindowTitle("Confirmation")
+        areYouSure.setText("Are you Sure you want to Delete the Current Nodes?\n All content will be Lost.")
+        areYouSure.setDetailedText(lista)
+        areYouSure.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.Cancel)
+        returnValue = areYouSure.exec_()
+
+        if (returnValue == QtWidgets.QMessageBox.Yes):
+            for i in range (len(items)):
+                self.bonsai_B.root.children._delete(items[i].text())
+
+            if (self.bonsai_B.root.name == "/"):
+                self.TreeB.clear()
+                self.B_currentChilds(self.bonsai_B.root.children.first)
+            else:
+                self.TreeB.clear()
+                folder = QtWidgets.QListWidgetItem(None,2)
+                folder.setText(".")
+                back = QtWidgets.QListWidgetItem(None,2)
+                back.setText("..")
+                self.TreeB.addItem(folder)
+                self.TreeB.addItem(back)
+                self.B_currentChilds(self.bonsai_B.root.children.first)
+        else:
+            print("Mision Abortada")
 
     def center(self,object):
         qtRectangle = object.frameGeometry() 
@@ -425,9 +587,21 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         font.setWeight(70)
         infoBox.setFont(font)
         infoBox.setDetailedText(self.versionLog)
-        infoBox.setText("\n\tVersion 1.0.2\t\n\n\tAlexis Ochoa\n\tMarco Ruíz")
+        infoBox.setText("\n\tVersion 1.3.2\t\n\n\tAlexis Ochoa\n\tMarco Ruíz")
 
         infoBox.exec_()
+
+    def A_Save(self):
+        mem = Memory()
+        FirstRoot = self.bonsai_A.getFirstRoot(self.bonsai_A.root)
+        mem.TreeToMatrix(FirstRoot)
+        mem.MatrixToFile("Memory/TreeA.mem")
+
+    def B_Save(self):
+        mem = Memory()
+        FirstRoot = self.bonsai_B.getFirstRoot(self.bonsai_B.root)
+        mem.TreeToMatrix(FirstRoot)
+        mem.MatrixToFile("Memory/TreeB.mem")
 
     def retranslateUi(self, Explorer):
         _translate = QtCore.QCoreApplication.translate

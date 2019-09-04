@@ -7,4 +7,7 @@ if __name__ == "__main__":
     ui = Ui_Explorer()
     ui.setupUi(Explorer)
     Explorer.show()
-    sys.exit(app.exec_())
+    run = app.exec_()
+    ui.A_Save()
+    ui.B_Save()
+    sys.exit(run)
