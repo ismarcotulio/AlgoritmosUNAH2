@@ -183,6 +183,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         self.A_Delete.clicked.connect(self.DeleteA)
         self.B_Delete.clicked.connect(self.DeleteB)
 
+
         QtCore.QMetaObject.connectSlotsByName(Explorer)
 
     def AddFile_A(self):
@@ -428,6 +429,7 @@ class Ui_Explorer(QtWidgets.QMainWindow):
                 self.TreeA.addItem(item)
                 self.A_currentChilds(current.next)
 
+<<<<<<< HEAD
     def B_currentChilds(self,current):
         if current is None:
             return True
@@ -452,6 +454,9 @@ class Ui_Explorer(QtWidgets.QMainWindow):
                 self.B_currentChilds(current.next)
 
     def GoBack_A(self):
+=======
+    def GoBack(self):
+>>>>>>> a79cd3674bb7a9027b9354046cb6b34c6695f319
         if self.bonsai_A.root.name == "/":
             print("se encuentra en la raiz")
         elif self.bonsai_A.root.parent.name == "/":

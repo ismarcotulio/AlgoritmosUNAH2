@@ -3,6 +3,10 @@
 from Resources.Compare import *
 from Resources.Directory_Node import *
 from Resources.File_Node import *
+<<<<<<< HEAD
+=======
+
+>>>>>>> a79cd3674bb7a9027b9354046cb6b34c6695f319
 
 class LinkedList:
     def __init__(self):
@@ -156,6 +160,12 @@ class LinkedList:
                             current = current.next
                         current.next = item
                         current.next.parent = parent
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> a79cd3674bb7a9027b9354046cb6b34c6695f319
 
     def search(self,name): #Función de búsqueda, devuelve la primera Instancia encontrada
         return self.SearchInner(self.first,name)
