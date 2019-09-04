@@ -18,7 +18,7 @@ class LinkedList:
 
     def AddInner(self, current,item,parent):
         if self.first is None:
-            print("creacion raiz")
+            print("en first")
             self.first = item
             self.first.parent = parent
             return True

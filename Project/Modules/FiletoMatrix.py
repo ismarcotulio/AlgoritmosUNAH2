@@ -9,31 +9,28 @@ tree = []
 def FiletoMatrix(matrix = tree):
 	matrix.append(eval('[' + FiletoMatrixInner() + ']'))
 
-def FiletoMatrixInner(tabs=0, contador=0 , temp=[], array = rows):
+def FiletoMatrixInner(contador=0 ,tabs=0, array = rows):
 	if contador < len(array):
 		column = array[contador].split("\t")
+		columnTabs = len(column)-1
 		string = column[len(column)-1]
-
-		if len(column)-1 < tabs:
-			if string[len(string)-1] == "/":
-				return "],"+"'"+str(string)+"'"+",["+str(FiletoMatrixInner(tabs-1,contador+1))
-			else:
-				return "],"+"'"+str(string)+"'"+","+str(FiletoMatrixInner(tabs,contador+1))
-
-		elif len(column)-1 > tabs:
-			if string[len(string)-1] == "/":
-				return "'"+str(string)+"'"+",["+str(FiletoMatrixInner(tabs+1,contador+1))
-			else:
-				return "'"+str(string)+"'"+","+str(FiletoMatrixInner(tabs,contador+1))	
-
+		if contador + 1 <len(array):
+			columnNext = array[contador+1].split("\t")
+			columnNextTabs = len(columnNext)-1
 		else:
-			if string[len(string)-1] == "/":
-				return "'"+str(string)+"'"+",["+str(FiletoMatrixInner(tabs+1,contador+1))
-			else:
-				return "'"+str(string)+"'"+","+str(FiletoMatrixInner(tabs,contador+1))
- 
-	return "]"
-
+			columnNext = None
+		if columnNext != None:
+			if columnTabs < columnNextTabs:
+				return "'"+str(string)+"',["+FiletoMatrixInner(contador+1)
+			if columnTabs == columnNextTabs:
+				if string[len(string)-1] != "/":
+					return "'"+str(string)+"',"+FiletoMatrixInner(contador+1)
+				else:
+					return "'"+str(string)+"',[],"+FiletoMatrixInner(contador+1)					
+			if columnTabs > columnNextTabs:
+				return "'"+str(string)+"'"+"]"*(columnTabs-columnNextTabs)+","+FiletoMatrixInner(contador+1)
+		else:
+			return "'"+str(string)+"'"+"]"*columnTabs
 
 FiletoMatrix(tree)
 tree2 = tree[0]

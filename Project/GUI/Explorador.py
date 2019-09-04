@@ -151,8 +151,18 @@ class Ui_Explorer(QtWidgets.QMainWindow):
         Explorer.setCentralWidget(self.centralwidget)
         self.retranslateUi(Explorer)
 
-        self.bonsai_A = Tree()
+        mem = Memory()  
         self.bonsai_B = Tree()
+        verify = mem.Load("Memory/Tree1.mem")
+        if verify == True:
+            self.bonsai_A = mem.tree
+            childs = self.bonsai_A.root.children
+            self.A_currentChilds(childs.first)
+            print(mem.matrix[0][1])
+            print(self.bonsai_A.root.name)
+        else:
+            self.bonsai_A = Tree()
+
 
 
         self.versionLog=(
@@ -415,8 +425,9 @@ class Ui_Explorer(QtWidgets.QMainWindow):
     def A_Save(self):
         mem = Memory()
         FirstRoot = self.bonsai_A.getFirstRoot(self.bonsai_A.root)
-        mem.TreeToMatrix(FirstRoot)
-        mem.MatrixToFile()
+        if FirstRoot.children != None:
+            mem.TreeToMatrix(FirstRoot)
+            mem.MatrixToFile()
 
     def _Warning(self,_type):
         self.centralwidget.setStyleSheet("background-color: rgb(32, 32, 32);")
