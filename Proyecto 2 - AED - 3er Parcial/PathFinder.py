@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-import tkinter as tk
-from tkinter import filedialog
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -109,13 +107,10 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def OpenFile(self):
-        root = tk.Tk()
-        root.withdraw()
-        
-        file_path = filedialog.askopenfilename(filetypes = [('Tab-Separated Values', '.tsv'), ('all files', '.*')], parent=root)
+        file_path = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget, 'Select a File', '/home', "Tab-Separated Values(*.tsv);;All Files(*)")
 
-        if file_path != "":
-            f = open(file_path, "r")
+        if file_path[0]:
+            f = open(file_path[0], "r")
 
             content = f.read()
             self.text_Graph.clear()
@@ -123,7 +118,7 @@ class Ui_MainWindow(object):
             print("Se Cargó el Archivo Correctamente")
         else:
             print("Acción Cancelada")
-
+        
     def center(self,object):
         qtRectangle = object.frameGeometry() 
         centerPoint = QtWidgets.QDesktopWidget().availableGeometry().center() 
