@@ -1,0 +1,36 @@
+graph = {
+	"A":
+	[
+		{
+		"B":
+			{
+			"distancia":"1",
+			"anchoDeBanda":"1",
+			"usuariosConectados":"1",
+			"cantidadDeTrafico":"1",
+			"tipoDeMedio":"CAT5",
+			},
+		"C":
+			{
+			"distancia":"1",
+			"anchoDeBanda":"1",
+			"usuariosConectados":"1",
+			"cantidadDeTrafico":"1",
+			"tipoDeMedio":"CAT5"
+			}
+		}
+	]
+	,"B":
+	[
+		{
+		"D":
+			{
+			"distancia":"1",
+			"anchoDeBanda":"1",
+			"usuariosConectados":"1",
+			"cantidadDeTrafico":"1",
+			"tipoDeMedio":"CAT5"
+			}
+		}
+	]
+}

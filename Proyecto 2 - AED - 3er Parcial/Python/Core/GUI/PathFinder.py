@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from Core.Resources.Convertion import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -102,6 +103,10 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         MainWindow.setCentralWidget(self.centralwidget)
 
+
+        self.convertion = Convertion()
+        self.dict = {}
+
         self.retranslateUi(MainWindow)
         self.load_File.clicked.connect(self.OpenFile)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -110,14 +115,16 @@ class Ui_MainWindow(object):
         file_path = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget, 'Select a File', '/home', "Tab-Separated Values(*.tsv);;All Files(*)")
 
         if file_path[0]:
-            f = open(file_path[0], "r")
-
-            content = f.read()
-            self.text_Graph.clear()
-            self.text_Graph.setPlainText(content)
-            print("Se Cargó el Archivo Correctamente")
+            self.dict = self.convertion.TSVtoDict(file_path[0])
+            if self.dict:
+                self.text_Graph.clear()
+                self.text_Graph.setPlainText(self.convertion.dictString)
+                print("Se Cargó el Archivo Correctamente")
+            else:
+                print("Acción Cancelada")
         else:
             print("Acción Cancelada")
+
         
     def center(self,object):
         qtRectangle = object.frameGeometry() 
