@@ -3,13 +3,10 @@ class Convertion:
 		self.dict = {}
 		self.dicString = ""
 
-	def TSVtoDict(self, path):
-		f = open(path,"r")
-		content = f.read()
+	def TSVtoDict(self,content):
 		rows = content.split("\n")
 		self.dictString = "{%s" %(self.TSVtoDictInner(rows))
 		self.dict = eval(self.dictString)
-		f.close()
 		return self.dict
 
 	def TSVtoDictInner(self, rows, contador = 0,nextTabs = None):
@@ -46,13 +43,3 @@ class Convertion:
 				return '"%s":"%s" }]}' %(value[0],value[1])
 			elif currentTabs == 2:
 				return '"%s":"%s" } }]}' %(value[0],value[1])
-
-
-
-
-
-
-
-
-
-

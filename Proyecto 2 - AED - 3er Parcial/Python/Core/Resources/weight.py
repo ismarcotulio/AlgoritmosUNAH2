@@ -64,7 +64,4 @@ class Weight:
 
         print("La Arista tiene confiabilidad %.2f con un peso de %s y calidad %s" % (reliability,weight,quality))
 
-v1 = Weight()
-v2 = Weight()
-v1.getWeight(200,25,10,10,"Coaxial")
-v2.getWeight(7,10,4,2,"Wi-Fi")
+        return weight
