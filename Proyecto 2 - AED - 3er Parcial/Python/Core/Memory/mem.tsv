@@ -1,0 +1,53 @@
+A:
+	B:
+		distancia:10
+		anchoDeBanda:7
+		usuariosConectados:4
+		cantidadDeTrafico:2
+		tipoDeMedio:Wi-Fi
+	C:
+		distancia:10000
+		anchoDeBanda:100
+		usuariosConectados:1000000
+		cantidadDeTrafico:89
+		tipoDeMedio:CAT6
+B:
+	D:
+		distancia:5
+		anchoDeBanda:10
+		usuariosConectados:3
+		cantidadDeTrafico:4
+		tipoDeMedio:Wi-Fi
+	E:
+		distancia:10000
+		anchoDeBanda:1
+		usuariosConectados:900
+		cantidadDeTrafico:1
+		tipoDeMedio:Coaxial
+C:
+	E:
+		distancia:8
+		anchoDeBanda:10
+		usuariosConectados:5
+		cantidadDeTrafico:2
+		tipoDeMedio:Wi-Fi
+	F:
+		distancia:1
+		anchoDeBanda:1
+		usuariosConectados:1
+		cantidadDeTrafico:1
+		tipoDeMedio:CAT5
+D:
+	G:
+		distancia:1
+		anchoDeBanda:1
+		usuariosConectados:1
+		cantidadDeTrafico:1
+		tipoDeMedio:CAT5
+F:
+	G:
+		distancia:40
+		anchoDeBanda:25
+		usuariosConectados:3
+		cantidadDeTrafico:4
+		tipoDeMedio:CAT6

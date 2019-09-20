@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from Core.Resources.Convertion import *
+from Core.Resources.Draw import *
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -102,23 +104,36 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         MainWindow.setCentralWidget(self.centralwidget)
 
+
+        self.convertion = Convertion()
+        self.dict = {}
+
         self.retranslateUi(MainWindow)
         self.load_File.clicked.connect(self.OpenFile)
+        self.generate_Map.clicked.connect(self.Draw_Graph)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def OpenFile(self):
         file_path = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget, 'Select a File', '/home', "Tab-Separated Values(*.tsv);;All Files(*)")
 
+        #self.dict = self.convertion.TSVtoDict(file_path[0])
         if file_path[0]:
-            f = open(file_path[0], "r")
-
+            f = open(file_path[0],"r")
             content = f.read()
             self.text_Graph.clear()
             self.text_Graph.setPlainText(content)
             print("Se Cargó el Archivo Correctamente")
         else:
             print("Acción Cancelada")
-        
+
+    def Draw_Graph(self):
+        content = self.text_Graph.toPlainText()
+        self.dict = self.convertion.TSVtoDict(content)
+        g = Draw_Graph()
+        g.draw(self.dict)
+
+
+
     def center(self,object):
         qtRectangle = object.frameGeometry() 
         centerPoint = QtWidgets.QDesktopWidget().availableGeometry().center() 
@@ -132,37 +147,28 @@ class Ui_MainWindow(object):
             "Ejemplo:\n"
             "\n"
             "A:\n"
-            "    B:\n"
-            "        distancia:1\n"
-            "        anchoDeBanda:1\n"
-            "        usuariosConectados:9\n"
-            "        cantidadDeTrafico: 2\n"
-            "        tipoDeMedio:CAT5\n"
-            "    C:\n"
-            "        distancia:10\n"
-            "        anchoDeBanda:7\n"
-            "        usuariosConectados:3\n"
-            "        cantidadDeTrafico:1\n"
-            "        tipoDeMedio:Fibra-Optica\n"
+            "\tB:\n"
+            "\t\tdistancia:1\n"
+            "\t\tanchoDeBanda:1\n"
+            "\t\tusuariosConectados:9\n"
+            "\t\tcantidadDeTrafico: 2\n"
+            "\t\ttipoDeMedio:CAT5\n"
+            "\tC:\n"
+            "\t\tdistancia:10\n"
+            "\t\tanchoDeBanda:7\n"
+            "\t\tusuariosConectados:3\n"
+            "\t\tcantidadDeTrafico:1\n"
+            "\t\ttipoDeMedio:Fibra-Optica\n"
             "B:\n"
-            "    C:\n"
-            "        distancia:10000\n"
-            "        anchoDeBanda: 90\n"
-            "        usuariosConectados: 7656\n"
-            "        cantidadDeTrafico: 87\n"
-            "        tipoDeMedio:CAT6"))
+            "\tC:\n"
+            "\t\tdistancia:10000\n"
+            "\t\tanchoDeBanda: 90\n"
+            "\t\tusuariosConectados: 7656\n"
+            "\t\tcantidadDeTrafico: 87\n"
+            "\t\ttipoDeMedio:CAT6"))
         self.load_File.setText(_translate("MainWindow", "Load File"))
         self.generate_Map.setText(_translate("MainWindow", "Generate Map"))
         self.generate_Table.setText(_translate("MainWindow", "Generate Table"))
         self.Origin.setText(_translate("MainWindow", "Origin Vertex"))
         self.destination.setText(_translate("MainWindow", "Destination Vertex"))
         self.label.setText(_translate("MainWindow", "Text Graph"))
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
