@@ -3,6 +3,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from Core.Resources.Convertion import *
 from Core.Resources.Draw import *
+from Core.Resources.MatrixAdyacente import *
+from Core.Resources.Floyd import *
 from Core.GUI.Table import*
 
 class Ui_MainWindow(object):
@@ -108,6 +110,9 @@ class Ui_MainWindow(object):
 
         self.convertion = Convertion()
         self.dict = {}
+        self.matrixAdyacente = MatrixAdyacente()
+        self.floyd = AlgoritFloyd()
+
 
         self.retranslateUi(MainWindow)
         self.load_File.clicked.connect(self.OpenFile)
@@ -132,13 +137,16 @@ class Ui_MainWindow(object):
         content = self.text_Graph.toPlainText()
         self.dict = self.convertion.TSVtoDict(content.strip())
         g = Draw_Graph()
+        print(self.dict)
         g.draw(self.dict)
 
     def GenerateTable(self):
         Form = QtWidgets.QWidget()
         ui = Ui_Form()
         ui.setupUi(Form)
-        ui.plainTextEdit.setPlainText("Linea 141 de PathFinder\n\n\t Por Aqui me mandas la Tabla")
+        matrix = self.matrixAdyacente.MatrixAdyacente(self.dict)
+        ui.plainTextEdit.setPlainText(print(self.Floyd.AlgoritFloyd(matrix))
+)
         self.center(Form)
         Form.show()
         Form.exec_()
