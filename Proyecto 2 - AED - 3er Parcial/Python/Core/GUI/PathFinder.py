@@ -3,6 +3,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from Core.Resources.Convertion import *
 from Core.Resources.Draw import *
+from Core.GUI.Table import*
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -111,6 +112,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.load_File.clicked.connect(self.OpenFile)
         self.generate_Map.clicked.connect(self.Draw_Graph)
+        self.generate_Table.clicked.connect(self.GenerateTable)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def OpenFile(self):
@@ -128,11 +130,18 @@ class Ui_MainWindow(object):
 
     def Draw_Graph(self):
         content = self.text_Graph.toPlainText()
-        self.dict = self.convertion.TSVtoDict(content)
+        self.dict = self.convertion.TSVtoDict(content.strip())
         g = Draw_Graph()
         g.draw(self.dict)
 
-
+    def GenerateTable(self):
+        Form = QtWidgets.QWidget()
+        ui = Ui_Form()
+        ui.setupUi(Form)
+        ui.plainTextEdit.setPlainText("Linea 141 de PathFinder\n\n\t Por Aqui me mandas la Tabla")
+        self.center(Form)
+        Form.show()
+        Form.exec_()
 
     def center(self,object):
         qtRectangle = object.frameGeometry() 

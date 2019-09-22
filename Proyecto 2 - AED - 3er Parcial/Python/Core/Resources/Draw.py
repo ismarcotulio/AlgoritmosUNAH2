@@ -23,6 +23,10 @@ class Draw_Graph:
         # Dibujar las etiquetas de peso de acuerdo a la posicion de los vertices
         nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
 
+        #nx.shortest_path_length(G, source=node_1, target=node_2, weight='weight')
+
+        #nx.dijkstra_path(G,source=)
+
         plt.show()
 
     def Draw_Inner(self,graph):
@@ -43,4 +47,4 @@ class Draw_Graph:
     def calculate_Weight(self,properties):
         p = list(properties.values())
         w = Weight()
-        return w.getWeight(int(p[0]),int(p[1]),int(p[2]),int(p[3]),p[4])
+        return w.getWeight(float(p[0]),float(p[1]),int(p[2]),float(p[3]),p[4])
