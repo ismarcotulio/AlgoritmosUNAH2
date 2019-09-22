@@ -18,14 +18,14 @@ B:
 		usuariosConectados:3
 		cantidadDeTrafico:4
 		tipoDeMedio:Wi-Fi
-	E:
+	C:
 		distancia:10000
 		anchoDeBanda:1
 		usuariosConectados:900
 		cantidadDeTrafico:1
 		tipoDeMedio:Coaxial
 C:
-	E:
+	A:
 		distancia:8
 		anchoDeBanda:10
 		usuariosConectados:5
@@ -38,14 +38,14 @@ C:
 		cantidadDeTrafico:1
 		tipoDeMedio:CAT5
 D:
-	G:
+	C:
 		distancia:1
 		anchoDeBanda:1
 		usuariosConectados:1
 		cantidadDeTrafico:1
 		tipoDeMedio:CAT5
 F:
-	G:
+	D:
 		distancia:40
 		anchoDeBanda:25
 		usuariosConectados:3

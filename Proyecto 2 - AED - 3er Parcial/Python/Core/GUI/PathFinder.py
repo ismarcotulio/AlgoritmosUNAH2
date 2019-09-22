@@ -5,6 +5,7 @@ from Core.Resources.Convertion import *
 from Core.Resources.Draw import *
 from Core.Resources.MatrixAdyacente import *
 from Core.Resources.Floyd import *
+from Core.Resources.Path import *
 from Core.GUI.Table import*
 
 class Ui_MainWindow(object):
@@ -112,6 +113,7 @@ class Ui_MainWindow(object):
         self.dict = {}
         self.matrixAdyacente = MatrixAdyacente()
         self.floyd = AlgoritFloyd()
+        self.path = Path()
 
 
         self.retranslateUi(MainWindow)
@@ -144,9 +146,10 @@ class Ui_MainWindow(object):
         Form = QtWidgets.QWidget()
         ui = Ui_Form()
         ui.setupUi(Form)
-        matrix = self.matrixAdyacente.MatrixAdyacente(self.dict)
-        ui.plainTextEdit.setPlainText(print(self.Floyd.AlgoritFloyd(matrix))
-)
+        self.path.findPaths(self.dict,"A","C")
+        ui.plainTextEdit.setPlainText("%s" %(self.path.paths))
+
+
         self.center(Form)
         Form.show()
         Form.exec_()
